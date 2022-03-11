@@ -34,7 +34,7 @@ for i in range(10):
     sprites.add(new_rival)
 
 # player
-player = PlayerCar(WIDTH / 2, HEIGHT)
+player = PlayerCar(WIDTH / 2, HEIGHT - 20)
 # all_cars.add(player)
 sprites.add(player)
 
@@ -109,6 +109,7 @@ while True:
     up, = (keys[pygame.K_UP],)
     if up:
         rivals.update(up=5)
+        fuels.update(up=5)
         all_lines.update(up=5)
 
     # Ekran arka planı

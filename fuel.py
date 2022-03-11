@@ -53,14 +53,14 @@ class Fuel(pygame.sprite.Sprite):
     def move(self, up=0):
         if self.rect.top >= 800:
             x = random.choice((160, 280, 400, 520, 640))
-            y = random.randint(-3000, -1000)
+            y = random.randint(-3000, -2000)
             self.rect.centerx = x
             self.rect.centery = y
         self.rect.centery += self.speed + up
 
     def gathered(self):
         x = random.choice((160, 280, 400, 520, 640))
-        y = random.randint(-4000, -2000)
+        y = random.randint(-5000, -3000)
         self.rect.centerx = x
         self.rect.centery = y
         self.amount = random.randint(50, 100)
