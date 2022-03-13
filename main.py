@@ -111,6 +111,7 @@ while True:
         rivals.update(up=5)
         fuels.update(up=5)
         all_lines.update(up=5)
+        check.update(up=5)
 
     # Ekran arka planı
     screen.blit(background, (0, 0))
