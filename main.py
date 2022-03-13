@@ -7,8 +7,15 @@ from car import PlayerCar, RivalCar
 from lane import lines
 from check_point import CheckPoint
 from fuel import FuelBar, Fuel
+from sounds import BackgroundMusic, SoundEffects
 
 pygame.init()
+
+# oyun başlangıç zamanı
+begin_time = time.time()
+
+background_music = BackgroundMusic()
+background_music.play()
 
 # Ekran Objesini oluştur
 WIDTH = 800
@@ -18,6 +25,17 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 #arka plan görüntüsü
 background = pygame.image.load("assets/background.png")
 screen.blit(background, (0, 0))
+
+# Şerit Çizgileri
+all_lines = pygame.sprite.Group()
+for line in lines:
+    all_lines.add(line)
+
+# countdown
+sound_effect = SoundEffects()
+sound_effect.countdown.play()
+# time.sleep(5)
+
 
 # Bütün spriteler
 sprites = pygame.sprite.Group()
@@ -38,10 +56,6 @@ player = PlayerCar(WIDTH / 2, HEIGHT - 20)
 # all_cars.add(player)
 sprites.add(player)
 
-# Şerit Çizgileri
-all_lines = pygame.sprite.Group()
-for line in lines:
-    all_lines.add(line)
 
 # FuelBar
 fuel_bar = FuelBar()
@@ -74,12 +88,17 @@ def game_over():
     screen.blit(game_over_txt, game_over_pos)
     screen.blit(point_txt, point_txt_pos)
     pygame.display.update()
+    pygame.time.wait(1000)
+    sound_effect.game_over.play()
     pygame.time.wait(3000)
     sys.exit()
 
 while True:
     # fps belirle
     clock.tick(60)
+
+    if time.time() - begin_time > 0.2 and time.time() - begin_time < 5:
+        time.sleep(5)
 
     # Penceredeki X butonuna basınca oyunu kapatsın
     for event in pygame.event.get():
@@ -89,11 +108,14 @@ while True:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RIGHT:
                 player.switch_right()
+                sound_effect.passing.play()
             if event.key == pygame.K_LEFT:
                 player.switch_left()
+                sound_effect.passing.play()
             if event.key == pygame.K_SPACE:
                 if time.time() - player.jump_time > player.jump_wait_duration:
                     fuel_bar.amount -= 60
+                sound_effect.jumping.play()
                 player.jump()
 
     if time.time() - player.jump_time > player.jump_duration:
@@ -129,12 +151,14 @@ while True:
     # Çarpışma Kontrolü
     if time.time() - player.jump_time > player.jump_duration:
         if pygame.sprite.spritecollide(player, rivals, False):
+            sound_effect.hit_rival.play()
             game_over()
 
     # Benzin Toplama
     if pygame.sprite.spritecollide(player, fuels, False):
         fuel.gathered()
         fuel_bar.amount += fuel.amount
+        sound_effect.gather_fuel.play()
 
 
     # Benzin bitişi kontrolü
