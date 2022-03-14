@@ -26,15 +26,16 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 background = pygame.image.load("assets/background.png")
 screen.blit(background, (0, 0))
 
+# keys to play
+keys = pygame.image.load("assets/keys.png")
+screen.blit(keys, (320, 250))
+
 # Şerit Çizgileri
 all_lines = pygame.sprite.Group()
 for line in lines:
     all_lines.add(line)
 
-# countdown
-sound_effect = SoundEffects()
-sound_effect.countdown.play()
-# time.sleep(5)
+
 
 
 # Bütün spriteler
@@ -73,8 +74,25 @@ check = CheckPoint()
 # all_lines.add(check)
 sprites.add(check)
 
+
+# countdown
+sound_effect = SoundEffects()
+sound_effect.countdown.play()
+all_lines.draw(screen)
+sprites.draw(screen)
+pygame.display.update()
+screen.blit(background, (0, 0))
+
+
+time.sleep(5)
+
+
+
+
 # FPS - Saniye de gösterilecek kare sayısını belirten obje
 clock = pygame.time.Clock()
+
+
 
 def game_over():
     game_over_font = pygame.font.SysFont('Helvetica', 50)
@@ -93,12 +111,12 @@ def game_over():
     pygame.time.wait(3000)
     sys.exit()
 
+
+
 while True:
     # fps belirle
     clock.tick(60)
 
-    if time.time() - begin_time > 0.2 and time.time() - begin_time < 5:
-        time.sleep(5)
 
     # Penceredeki X butonuna basınca oyunu kapatsın
     for event in pygame.event.get():
@@ -115,7 +133,7 @@ while True:
             if event.key == pygame.K_SPACE:
                 if time.time() - player.jump_time > player.jump_wait_duration:
                     fuel_bar.amount -= 60
-                sound_effect.jumping.play()
+                    sound_effect.jumping.play()
                 player.jump()
 
     if time.time() - player.jump_time > player.jump_duration:
@@ -125,6 +143,7 @@ while True:
         player.rect = player.image.get_rect()
         player.rect.centerx = x
         player.rect.bottom = y
+
 
     # basılı tuttukça çalışan tuşlar
     keys = pygame.key.get_pressed()

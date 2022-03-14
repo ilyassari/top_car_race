@@ -8,7 +8,7 @@ class FuelBar(pygame.sprite.Sprite):
         self.max_amount = 500
         self.amount = self.max_amount
         self.image = pygame.Surface((10, self.amount))
-        self.image.fill((250, 250, 250))
+        self.image.fill((200, 200, 200))
         self.rect = self.image.get_rect()
         self.rect.bottom = y
         self.rect.centerx = x
@@ -26,7 +26,7 @@ class FuelBar(pygame.sprite.Sprite):
         y = self.rect.bottom
         if self.amount > 200:
             self.image = pygame.Surface((10, int(self.amount)))
-            self.image.fill((250, 250, 250))
+            self.image.fill((200, 200, 200))
         elif self.amount > 0:
             self.image = pygame.Surface((10, int(self.amount)))
             self.image.fill((250, 0, 0))
@@ -53,7 +53,7 @@ class Fuel(pygame.sprite.Sprite):
     def move(self, up=0):
         if self.rect.top >= 800:
             x = random.choice((160, 280, 400, 520, 640))
-            y = random.randint(-3000, -2000)
+            y = random.randint(-4000, -3000)
             self.rect.centerx = x
             self.rect.centery = y
         self.rect.centery += self.speed + up
